@@ -18,6 +18,8 @@ function App() {
 
     const onIncreaseHadnler = () => {
         setCounter(counter + 1)
+        // TESTING
+        //TESTING
     }
     const resetButton = () => {
         setCounter(minValue)
