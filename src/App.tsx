@@ -21,6 +21,7 @@ function App() {
         // TESTING
         //TESTING
         // xddd im sitting from notebook
+        // WTF WHY ISNT WORKING
     }
     const resetButton = () => {
         setCounter(minValue)
