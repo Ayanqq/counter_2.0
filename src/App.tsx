@@ -4,72 +4,81 @@ import styled from "styled-components";
 import {Counter} from "./components/Counter";
 import {SetCounter} from './components/SetCounter';
 
+const minValueFromLocalStorage = Number(localStorage.getItem('minValue'))
+const maxValueFromLocalStorage = Number(localStorage.getItem('maxValue'))
 
 function App() {
-    const [maxValue, setMaxValue] = useState(0);
+    const [maxValue, setMaxValue] = useState(maxValueFromLocalStorage);
     //- это стейт для хранения максимального значения
-
-    const [counter, setCounter] = useState(0)
+    const [counter, setCounter] = useState(minValueFromLocalStorage)
     //- это счетчик, который прибавляет +1
-
-    const [minValue, setMinValue] = useState(maxValue)
+    const [minValue, setMinValue] = useState(0)
     //- это счетчик, который отвечает за минимальное значение
-
+    const [error, setError] = useState('')
 
     const onIncreaseHadnler = () => {
         setCounter(counter + 1)
-        // TESTING
-        //TESTING
-        // xddd im sitting from notebook
-        // WTF WHY ISNT WORKING
-        // wtf
-        // im the best player
-
     }
+
     const resetButton = () => {
-        setCounter(minValue)
+        setCounter(minValueFromLocalStorage)
     }
-
     const setHandler = (min: number, max: number) => {
         setCounter(min)
         setMaxValue(max)
     }
 
 
-
     return (
-        <div style={{display: "flex", justifyContent: 'center', gap: '20px'}}>
+        <StyledAll>
+        <StyledBlocks>
             <SetCounter
                 minValue={minValue}
                 maxValue={maxValue}
                 setCount={setHandler}
+                counter={counter}
+                setError={setError}
+                error={error}
             />
-            <Main>
+            <StyledCounter>
                 <Counter
+                    setError={setError}
                     counter={counter}
                     maxValue={maxValue}
                     minValue={minValue}
                     onIncreaseHandler={onIncreaseHadnler}
                     resetButton={resetButton}
-
+                    error={error}
                 />
-
-            </Main>
-
-        </div>
+            </StyledCounter>
+        </StyledBlocks>
+        </StyledAll>
     );
 }
 
 export default App;
 
-const Main = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
+const StyledCounter = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
 
-    border: 5px solid #279eea;
-    border-radius: 20px;
-    gap: 20px;
+  border: 5px solid #279eea;
+  border-radius: 20px;
+  gap: 20px;
+`
+
+const StyledBlocks = styled.div`
+    display:flex;
+    justify-content: center;
+    gap:20px;
+`
+const StyledAll = styled.div`
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center
 `
