@@ -18,12 +18,7 @@ function App() {
 
     const onIncreaseHadnler = () => {
         setCounter(counter + 1)
-        // TESTING
-        //TESTING
-        // xddd im sitting from notebook
-        // WTF WHY ISNT WORKING
-        // wtf
-        // im the best player
+
 
     }
     const resetButton = () => {
