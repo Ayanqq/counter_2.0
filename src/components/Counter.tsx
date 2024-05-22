@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React from 'react';
 import styled from "styled-components";
 import {Button} from "./Button";
 
@@ -8,12 +8,12 @@ type CounterType = {
     minValue: number
     onIncreaseHandler: () => void;
     resetButton: () => void
+    setError: (value:string) => void
+    error:string
 
 }
 
-//todo:сделать инпут, disable переделать
-export const Counter = ({maxValue, minValue, counter, onIncreaseHandler, resetButton}: CounterType) => {
-    const [error, setError] = useState(false)
+export const Counter = ({maxValue, counter, onIncreaseHandler, resetButton, error}: CounterType) => {
 
     const addIncrement = () => {
         if (counter < maxValue) {
@@ -21,25 +21,14 @@ export const Counter = ({maxValue, minValue, counter, onIncreaseHandler, resetBu
         }
     }
 
-    // const Error = (boolean:boolean) => {
-    //     setError(boolean)
-    // }
-
-    if (maxValue === -1 && !error) {
-        setError(true)
-    }
-
-
-
     return (
             <>
                 <CounterMain>
-                    {error ? <StyledError>STOP</StyledError> :
+                    {error ? <StyledError>{error}</StyledError> :
                         <StyledSpan color={counter === maxValue ? 'red' : 'white'}>{counter}</StyledSpan>}
                 </CounterMain>
                 <StyledButtons>
                     <Button title={'inc'} onclick={addIncrement} disabled={counter === maxValue}/>
-                    {/*но чтобы проверить maxValue - туда должно что то попатсь, и попадать должно только тогда, когда set*/}
                     <Button title={'reset'} onclick={resetButton} disabled={counter < 1}/>
                 </StyledButtons>
             </>

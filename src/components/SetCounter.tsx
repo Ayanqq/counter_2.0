@@ -1,61 +1,60 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import styled from "styled-components";
 import {Button} from "./Button";
+import {InputWithSpan} from "./InputWithSpan";
 
 type CounterType = {
-    minValue:number
-    maxValue:number
-    setCount: (min: number, max: number)=>void
+    minValue: number
+    maxValue: number
+    setCount: (min: number, max: number) => void
+    counter: number
+    setError: (title: string) => void
+    error: string
 }
 
-export const SetCounter = ({maxValue, minValue, setCount}: CounterType) => {
+export const SetCounter = ({maxValue, minValue, setCount, setError}: CounterType) => {
     const [min, setMin] = useState(minValue)
     const [max, setMax] = useState(maxValue)
 
-    // const [error, setError] = useState(false)
+    if (max === min) {
+        setError('Числа одинаковые')
+    }
 
-    //где надо размещать error
-
-    const maxValueHandler = (e:ChangeEvent<HTMLInputElement>) => {
+    const maxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const value = Number(e.currentTarget.value)
+        if (max < 1) {
+            setError('MAX VALUE error')
+        } else {
+            setError('')
+        }
         setMax(value)
+
     }
 
     const minValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        if (min < 1) {
+            setError('incorrect value')
+        } else {
+            setError('')
+        }
         const value = Number(e.currentTarget.value);
         setMin(value);
     }
 
     const setCounterHandler = () => {
-        setCount(min, max)
         localStorage.setItem('minValue', JSON.stringify(min))
         localStorage.setItem('maxValue', JSON.stringify(max))
+        setCount(min, max)
+
     }
-
-    useEffect(() => {
-        if (min == -1) {
-            setMin(-1)
-        }
-    }, [min]);
-
-
-    // useEffect(() => {
-    //     if (min == -1 || max == -1) {
-    //         setMin(-1)
-    //         setMax(-1)
-    //     }
-    // }, [min, max]);
 
     useEffect(() => {
         getMinValueLocalStorage()
         getMaxValueLocalStorage()
     }, []);
+    // ---Помещение значений в LocalStorage
 
-    const disabled = min < 0 || max < 0
-
-    const setToLocalStorage = () => {
-        localStorage.setItem('minValue', JSON.stringify(min))
-    }
+    const disabled = min <= 0 || max <= 0 || max === min
 
     const getMinValueLocalStorage = () => {
         let minValueAsString = localStorage.getItem('minValue')
@@ -75,20 +74,10 @@ export const SetCounter = ({maxValue, minValue, setCount}: CounterType) => {
 
     return (
         <StyledDiv>
-                <span>
-                    max value
-                    <input
-                        value={max}
-                        onChange={maxValueHandler}
-                        type='number'/>
-                </span>
-            <span>
-                    min value
-                    <input
-                        value={min}
-                        onChange={minValueHandler}
-                        type='number'/>
-                </span>
+
+            <InputWithSpan title={'MAX VALUE'} onChange={maxValueHandler} value={max > -1 ? max : -1}/>
+            <InputWithSpan title={'MIN VALUE'} onChange={minValueHandler} value={min > -1 ? min : -1}/>
+
             <StyledButtons>
                 <Button title={'set'} onclick={setCounterHandler} disabled={disabled}/>
             </StyledButtons>
@@ -98,20 +87,32 @@ export const SetCounter = ({maxValue, minValue, setCount}: CounterType) => {
 
 
 const StyledDiv = styled.div`
-    display: flex;
-    justify-content: center;
-    flex-direction:column;
-    border:5px solid #279eea;
-    border-radius:20px;
-    gap:20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border: 5px solid #279eea;
+  border-radius: 20px;
+  gap: 20px;
+  padding:50px;
 `
 
 
 const StyledButtons = styled.div`
-  display:flex;
-  justify-content:center;
-  border:5px solid #279eea;
-  padding:10px;
-  border-radius:20px;
+  display: flex;
+  justify-content: center;
+  border: 5px solid #279eea;
+  padding: 10px;
+  border-radius: 20px;
+  font-family:'Montserrat', sans-serif; 
+`
+
+const StyledCounterSpan = styled.span`
+  font-size:25px;
+`
+
+const StyledInput = styled.input`
+  border:0;
+  border-radius:5px;
+  padding:5px;
 `
 
