@@ -11,6 +11,7 @@ function App() {
     const [maxValue, setMaxValue] = useState(maxValueFromLocalStorage);
     //- это стейт для хранения максимального значения
     const [counter, setCounter] = useState(minValueFromLocalStorage)
+    const [message, setMessage] = useState<'eror' | 'sucsses' | ''>('')
     //- это счетчик, который прибавляет +1
     const [minValue, setMinValue] = useState(0)
     //- это счетчик, который отвечает за минимальное значение
@@ -21,11 +22,12 @@ function App() {
 }
 
     const resetButton = () => {
-        setCounter(minValueFromLocalStorage)
+        setCounter(  Number(localStorage.getItem('minValue')))
     }
     const setHandler = (min: number, max: number) => {
         setCounter(min)
         setMaxValue(max)
+        setError('')
     }
 
 

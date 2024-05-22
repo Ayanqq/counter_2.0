@@ -28,6 +28,7 @@ export const SetCounter = ({maxValue, minValue, setCount, setError}: CounterType
             setError('')
         }
         setMax(value)
+        setError('Произошел SET')
 
     }
 
@@ -39,6 +40,7 @@ export const SetCounter = ({maxValue, minValue, setCount, setError}: CounterType
         }
         const value = Number(e.currentTarget.value);
         setMin(value);
+        setError('Произошел SET')
     }
 
     const setCounterHandler = () => {
