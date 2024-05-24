@@ -5,7 +5,6 @@ import {Button} from "./Button";
 type CounterType = {
     counter: number
     maxValue: number
-    minValue: number
     onIncreaseHandler: () => void;
     resetButton: () => void
     setError: (value:string) => void
@@ -14,12 +13,17 @@ type CounterType = {
 }
 
 export const Counter = ({maxValue, counter, onIncreaseHandler, resetButton, error}: CounterType) => {
+    const disableForInc = counter === maxValue || !!error
+    const disableForReset = counter === Number(localStorage.getItem('minValue'))
+
 
     const addIncrement = () => {
         if (counter < maxValue) {
             onIncreaseHandler()
         }
     }
+
+
 
     return (
             <>
@@ -28,8 +32,8 @@ export const Counter = ({maxValue, counter, onIncreaseHandler, resetButton, erro
                         <StyledSpan color={counter === maxValue ? 'red' : 'white'}>{counter}</StyledSpan>}
                 </CounterMain>
                 <StyledButtons>
-                    <Button title={'inc'} onclick={addIncrement} disabled={counter === maxValue}/>
-                    <Button title={'reset'} onclick={resetButton} disabled={counter < 1}/>
+                    <Button title={'inc'} onclick={addIncrement} disabled={disableForInc}/>
+                    <Button title={'reset'} onclick={resetButton} disabled={disableForReset}/>
                 </StyledButtons>
             </>
         );

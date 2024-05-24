@@ -10,7 +10,7 @@ export const InputWithSpan = ({title, onChange, value}:InputWithSpan) => {
     return (
         <StyledCounterSpan>
             {title}
-        <StyledInput onChange={onChange} value={value} type="number"/>
+        <StyledInput onChange={onChange} value={value} type="number" />
         </StyledCounterSpan>
     );
 };

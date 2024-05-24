@@ -4,18 +4,17 @@ import styled from "styled-components";
 import {Counter} from "./components/Counter";
 import {SetCounter} from './components/SetCounter';
 
-const minValueFromLocalStorage = Number(localStorage.getItem('minValue'))
+export const minValueFromLocalStorage = Number(localStorage.getItem('minValue'))
 const maxValueFromLocalStorage = Number(localStorage.getItem('maxValue'))
 
 function App() {
     const [maxValue, setMaxValue] = useState(maxValueFromLocalStorage);
     //- это стейт для хранения максимального значения
     const [counter, setCounter] = useState(minValueFromLocalStorage)
-    const [message, setMessage] = useState<'eror' | 'sucsses' | ''>('')
     //- это счетчик, который прибавляет +1
-    const [minValue, setMinValue] = useState(0)
+    const [minValue, setMinValue] = useState(minValueFromLocalStorage)
     //- это счетчик, который отвечает за минимальное значение
-    const [error, setError] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
 
     const onIncreaseHadnler = () => {
         setCounter(counter + 1)
@@ -27,7 +26,7 @@ function App() {
     const setHandler = (min: number, max: number) => {
         setCounter(min)
         setMaxValue(max)
-        setError('')
+        setErrorMessage('')
     }
 
 
@@ -39,18 +38,17 @@ function App() {
                 maxValue={maxValue}
                 setCount={setHandler}
                 counter={counter}
-                setError={setError}
-                error={error}
+                setErrorMessage={setErrorMessage}
+                error={errorMessage}
             />
             <StyledCounter>
                 <Counter
-                    setError={setError}
+                    setError={setErrorMessage}
                     counter={counter}
                     maxValue={maxValue}
-                    minValue={minValue}
                     onIncreaseHandler={onIncreaseHadnler}
                     resetButton={resetButton}
-                    error={error}
+                    error={errorMessage}
                 />
             </StyledCounter>
         </StyledBlocks>

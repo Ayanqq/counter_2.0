@@ -8,45 +8,55 @@ type CounterType = {
     maxValue: number
     setCount: (min: number, max: number) => void
     counter: number
-    setError: (title: string) => void
+    setErrorMessage: (title: string) => void
     error: string
 }
 
-export const SetCounter = ({maxValue, minValue, setCount, setError}: CounterType) => {
+export const SetCounter = ({maxValue, minValue, setCount, setErrorMessage}: CounterType) => {
     const [min, setMin] = useState(minValue)
     const [max, setMax] = useState(maxValue)
+    const [disable, setDisable] = useState(true)
 
     if (max === min) {
-        setError('Числа одинаковые')
+        setErrorMessage('Числа одинаковые')
     }
+
+    let disableForSet = min <= 0 || max <= 0 || max === min || min >= max
+
+    // if (min <= 0 || max <= 0 || max === min || min >= max) {
+    //     setDisable(false)
+    // ---Infinite Loop, Rerender
+    // }
 
     const maxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const value = Number(e.currentTarget.value)
-        if (max < 1) {
-            setError('MAX VALUE error')
+        if (max < 1 || max <= min) {
+            setErrorMessage('max value error')
         } else {
-            setError('')
+            setErrorMessage('Произошел сет')
         }
         setMax(value)
-        setError('Произошел SET')
+        setDisable(false)
 
     }
 
     const minValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        if (min < 1) {
-            setError('incorrect value')
+        if (min < 1 || min >= max) {
+            debugger
+            setErrorMessage('min value error')
         } else {
-            setError('')
+            setErrorMessage('Произошел сет')
         }
         const value = Number(e.currentTarget.value);
         setMin(value);
-        setError('Произошел SET')
+        setDisable(false)
     }
 
     const setCounterHandler = () => {
         localStorage.setItem('minValue', JSON.stringify(min))
         localStorage.setItem('maxValue', JSON.stringify(max))
         setCount(min, max)
+        setDisable(true)
 
     }
 
@@ -56,7 +66,7 @@ export const SetCounter = ({maxValue, minValue, setCount, setError}: CounterType
     }, []);
     // ---Помещение значений в LocalStorage
 
-    const disabled = min <= 0 || max <= 0 || max === min
+
 
     const getMinValueLocalStorage = () => {
         let minValueAsString = localStorage.getItem('minValue')
@@ -81,7 +91,7 @@ export const SetCounter = ({maxValue, minValue, setCount, setError}: CounterType
             <InputWithSpan title={'MIN VALUE'} onChange={minValueHandler} value={min > -1 ? min : -1}/>
 
             <StyledButtons>
-                <Button title={'set'} onclick={setCounterHandler} disabled={disabled}/>
+                <Button title={'set'} onclick={setCounterHandler} disabled={disable || disableForSet}/>
             </StyledButtons>
         </StyledDiv>
     );
