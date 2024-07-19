@@ -23,11 +23,6 @@ export const SetCounter = ({maxValue, minValue, setCount, setErrorMessage}: Coun
 
     let disableForSet = min <= 0 || max <= 0 || max === min || min >= max
 
-    // if (min <= 0 || max <= 0 || max === min || min >= max) {
-    //     setDisable(false)
-    // ---Infinite Loop, Rerender
-    // }
-
     const maxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const value = Number(e.currentTarget.value)
         if (max < 1 || max <= min) {
