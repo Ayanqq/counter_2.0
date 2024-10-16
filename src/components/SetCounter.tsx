@@ -2,23 +2,30 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import styled from "styled-components";
 import {Button} from "./Button";
 import {InputWithSpan} from "./InputWithSpan";
+import {useDispatch} from "react-redux";
+import {addErrorMessage} from "../features/errorSlice";
 
 type CounterType = {
     minValue: number
     maxValue: number
     setCount: (min: number, max: number) => void
     counter: number
-    setErrorMessage: (title: string) => void
+    // setErrorMessage: (title: string) => void
     error: string
 }
 
-export const SetCounter = ({maxValue, minValue, setCount, setErrorMessage}: CounterType) => {
+export const SetCounter = ({maxValue, minValue, setCount}: CounterType) => {
     const [min, setMin] = useState(minValue)
     const [max, setMax] = useState(maxValue)
     const [disable, setDisable] = useState(true)
 
+
+    const dispatch = useDispatch()
+
+
+
     if (max === min) {
-        setErrorMessage('Числа одинаковые')
+        dispatch(addErrorMessage('Числа одинаковые'))
     }
 
     let disableForSet = min <= 0 || max <= 0 || max === min || min >= max
@@ -26,9 +33,9 @@ export const SetCounter = ({maxValue, minValue, setCount, setErrorMessage}: Coun
     const maxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const value = Number(e.currentTarget.value)
         if (max < 1 || max <= min) {
-            setErrorMessage('max value error')
+            dispatch(addErrorMessage('max value error'))
         } else {
-            setErrorMessage('Произошел сет')
+            dispatch(addErrorMessage('Произошел сет'))
         }
         setMax(value)
         setDisable(false)
@@ -38,9 +45,9 @@ export const SetCounter = ({maxValue, minValue, setCount, setErrorMessage}: Coun
     const minValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         if (min < 1 || min >= max) {
             debugger
-            setErrorMessage('min value error')
+            dispatch(addErrorMessage('min value error'))
         } else {
-            setErrorMessage('Произошел сет')
+            dispatch(addErrorMessage('Произошел сет'))
         }
         const value = Number(e.currentTarget.value);
         setMin(value);

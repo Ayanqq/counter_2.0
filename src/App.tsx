@@ -3,6 +3,8 @@ import './App.css';
 import styled from "styled-components";
 import {Counter} from "./components/Counter";
 import {SetCounter} from './components/SetCounter';
+import {useDispatch, useSelector} from "react-redux";
+import {clearErrorMessage, errorValue} from "./features/errorSlice";
 
 export const minValueFromLocalStorage = Number(localStorage.getItem('minValue'))
 const maxValueFromLocalStorage = Number(localStorage.getItem('maxValue'))
@@ -14,9 +16,15 @@ function App() {
     //- это счетчик, который прибавляет +1
     const [minValue, setMinValue] = useState(minValueFromLocalStorage)
     //- это счетчик, который отвечает за минимальное значение
-    const [errorMessage, setErrorMessage] = useState('')
+    // const [errorMessage, setErrorMessage] = useState('')
 
-    const onIncreaseHadnler = () => {
+    // const errorMsg = useSelector(state => state.error.message)
+    const errorMsg = useSelector(errorValue)
+    const dispatch = useDispatch()
+
+    // console.log(count)
+
+    const onIncreaseHandler = () => {
         setCounter(counter + 1)
 }
 
@@ -26,7 +34,8 @@ function App() {
     const setHandler = (min: number, max: number) => {
         setCounter(min)
         setMaxValue(max)
-        setErrorMessage('')
+        dispatch(clearErrorMessage())
+        // setErrorMessage('')
     }
 
 
@@ -38,17 +47,17 @@ function App() {
                 maxValue={maxValue}
                 setCount={setHandler}
                 counter={counter}
-                setErrorMessage={setErrorMessage}
-                error={errorMessage}
+                // setErrorMessage={setErrorMessage}
+                error={errorMsg}
             />
             <StyledCounter>
                 <Counter
-                    setError={setErrorMessage}
+                    // setError={setErrorMessage}
                     counter={counter}
                     maxValue={maxValue}
-                    onIncreaseHandler={onIncreaseHadnler}
+                    onIncreaseHandler={onIncreaseHandler}
                     resetButton={resetButton}
-                    error={errorMessage}
+                    error={errorMsg}
                 />
             </StyledCounter>
         </StyledBlocks>

@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from "styled-components";
 import {Button} from "./Button";
+import {useDispatch, useSelector} from "react-redux";
+import {errorValue} from "../features/errorSlice";
 
 type CounterType = {
     counter: number
     maxValue: number
     onIncreaseHandler: () => void;
     resetButton: () => void
-    setError: (value:string) => void
+    // setError: (value:string) => void
     error:string
 
 }
@@ -16,6 +18,7 @@ export const Counter = ({maxValue, counter, onIncreaseHandler, resetButton, erro
     const disableForInc = counter === maxValue || !!error
     const disableForReset = counter === Number(localStorage.getItem('minValue'))
 
+    const errorMsg = useSelector(errorValue)
 
     const addIncrement = () => {
         if (counter < maxValue) {
@@ -23,12 +26,10 @@ export const Counter = ({maxValue, counter, onIncreaseHandler, resetButton, erro
         }
     }
 
-
-
     return (
             <>
                 <CounterMain>
-                    {error ? <StyledError>{error}</StyledError> :
+                    {errorMsg ? <StyledError>{error}</StyledError> :
                         <StyledSpan color={counter === maxValue ? 'red' : 'white'}>{counter}</StyledSpan>}
                 </CounterMain>
                 <StyledButtons>

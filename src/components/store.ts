@@ -1,17 +1,11 @@
-import { combineReducers, legacy_createStore, applyMiddleware, AnyAction } from 'redux'
-import thunkMiddleware, { ThunkDispatch } from 'redux-thunk'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import {appReducer} from "/app-reducer";
+import {configureStore} from "@reduxjs/toolkit";
+import {counterReducer} from "../features/counterSlice";
+import {errorPath, errorReducer} from "../features/errorSlice";
 
-const rootReducer = combineReducers({
-    app: appReducer,
-})
+export const store = configureStore({
+    reducer: {
+        counter: counterReducer,
+        [errorPath]: errorReducer
 
-export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware))
-
-export type AppRootState = ReturnType<typeof rootReducer>
-
-export type AppDispatch = ThunkDispatch<AppRootState, unknown, AnyAction>
-
-export const useAppDispatch = () => useDispatch<AppDispatch>()
-export const useAppSelector: TypedUseSelectorHook<AppRootState> = useSelector
+    }
+});
