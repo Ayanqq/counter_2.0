@@ -2,7 +2,7 @@
   "name": "final_exam",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Ayanqq.github.io/final-exam",
+  "homepage": "https://Ayanqq.github.io/counter_2.0",
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
     "@testing-library/jest-dom": "^5.14.1",
